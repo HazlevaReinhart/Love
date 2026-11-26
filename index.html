@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tes Kepekaan Hati 💘</title>
+<style>
+:root{--bg:#fff0f3;--fg:#5a1a2b;--accent:#e63a62;--accent2:#ff8fa8;--card:#ffffff;--muted:#a35a6e;--track:#ffd6df;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2a0f18;--fg:#ffe3ea;--accent:#ff4d79;--accent2:#ff9db6;--card:#3b1624;--muted:#e8a3b6;--track:#5a2335}}
+:root[data-theme="dark"]{--bg:#2a0f18;--fg:#ffe3ea;--accent:#ff4d79;--accent2:#ff9db6;--card:#3b1624;--muted:#e8a3b6;--track:#5a2335}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--fg);font-family:Georgia,'Times New Roman',serif;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center}
+.card{background:var(--card);border-radius:28px;padding:32px 24px;max-width:420px;width:88%;box-shadow:0 10px 40px rgba(230,58,98,.25);position:relative;z-index:2;max-height:92%;overflow-y:auto}
+.big{font-size:56px;animation:beat 1.2s infinite}
+h1{font-size:22px;line-height:1.35;margin:12px 0 6px}
+p{color:var(--muted);margin:0 0 20px;font-style:italic}
+.bar{height:8px;background:var(--track);border-radius:99px;overflow:hidden;margin-bottom:18px}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .4s}
+.step{font-size:13px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.opts{display:flex;flex-direction:column;gap:10px}
+button{font:inherit;font-size:17px;border:2px solid var(--accent2);background:transparent;color:var(--fg);border-radius:16px;padding:12px 16px;cursor:pointer;transition:transform .15s,background .15s}
+button:active{transform:scale(.97)}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:bold}
+input{font:inherit;font-size:18px;width:100%;box-sizing:border-box;padding:12px 16px;border-radius:16px;border:2px solid var(--accent2);background:var(--bg);color:var(--fg);text-align:center;margin-bottom:12px;outline:none}
+input:focus{border-color:var(--accent)}
+.fb{min-height:22px;color:var(--accent);font-style:italic;margin-top:14px}
+.hearts{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.h{position:absolute;bottom:-40px;animation:up linear forwards;opacity:.8}
+@keyframes up{to{transform:translateY(-110vh) rotate(25deg);opacity:0}}
+@keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+.dots span{animation:blink 1s infinite;font-size:28px}
+.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+@keyframes blink{50%{opacity:.2}}
+.final{font-size:34px;color:var(--accent);margin:10px 0;animation:beat 1.4s infinite}
+.hide{display:none}
+</style>
+</head>
+<body>
+<div class="hearts" id="hearts"></div>
+<div class="card" id="card"></div>
+<script>
+var card=document.getElementById('card'),hearts=document.getElementById('hearts');
+var Q=[
+ {q:'Kalau melihat senyum seseorang bikin harimu jadi cerah, itu tandanya…',o:['Lagi bahagia','Mulai jatuh cinta','Kebanyakan makan manis'],f:'Hmm, jawaban yang menarik 😏'},
+ {q:'Apa yang paling sering bikin kangen?',o:['Chat tengah malam','Suara dan tawanya','Semua jawaban benar'],f:'Dicatat dengan baik ✍️'},
+ {q:'Kalau ada yang bilang “aku sayang kamu”, reaksimu?',o:['Senyum-senyum sendiri','Salah tingkah','Pura-pura biasa saja'],f:'Aku tahu kamu jujur 🥰'},
+ {q:'Pertanyaan terakhir: siap menerima kejutan?',o:['Siap','Siap banget','Deg-degan tapi siap'],f:'Bagus! Hampir selesai 💕'}
+];
+var i=0;
+function heart(){
+ var s=document.createElement('span');
+ s.className='h';s.textContent=['💗','💖','💕','❤️'][Math.floor(Math.random()*4)];
+ s.style.left=Math.random()*100+'%';
+ s.style.fontSize=(16+Math.random()*28)+'px';
+ s.style.animationDuration=(4+Math.random()*4)+'s';
+ hearts.appendChild(s);
+ setTimeout(function(){s.remove()},8500);
+}
+setInterval(heart,500);
+function intro(){
+ card.innerHTML='<div class="big">💘</div><h1>Tes Kepekaan Hati</h1><p>Jawab 4 pertanyaan singkat. Tidak ada jawaban salah, kok.</p><button class="primary" id="go">Mulai tes</button>';
+ document.getElementById('go').onclick=function(){i=0;ask()};
+}
+function ask(){
+ var x=Q[i];
+ card.innerHTML='<div class="bar"><i id="pb"></i></div><div class="step">Pertanyaan '+(i+1)+' dari '+Q.length+'</div><h1>'+x.q+'</h1><div class="opts" id="opts"></div><div class="fb" id="fb"></div>';
+ setTimeout(function(){document.getElementById('pb').style.width=(i/Q.length*100)+'%'},30);
+ var box=document.getElementById('opts');
+ x.o.forEach(function(t){
+  var b=document.createElement('button');b.textContent=t;
+  b.onclick=function(){
+   document.getElementById('fb').textContent=x.f;
+   document.getElementById('pb').style.width=((i+1)/Q.length*100)+'%';
+   Array.prototype.forEach.call(box.children,function(c){c.disabled=true});
+   setTimeout(function(){i++;i<Q.length?ask():analyze()},900);
+  };
+  box.appendChild(b);
+ });
+}
+function analyze(){
+ card.innerHTML='<div class="big">🔍</div><h1>Menganalisis jawabanmu…</h1><p>Mohon tunggu sebentar</p><div class="dots"><span>❤</span><span>❤</span><span>❤</span></div>';
+ setTimeout(askName,2200);
+}
+function askName(){
+ card.innerHTML='<div class="big">✅</div><h1>Analisis selesai!</h1><p>Hasilnya khusus untuk satu orang. Ketik namamu untuk membukanya.</p><input id="nm" placeholder="Ketik namamu di sini" maxlength="30" autocomplete="off"><button class="primary" id="ok">Lihat hasil</button><div class="fb" id="fb"></div>';
+ var nm=document.getElementById('nm');
+ function submit(){
+  var v=nm.value.trim();
+  if(!v){document.getElementById('fb').textContent='Namanya belum diketik 🥺';return}
+  result(v);
+ }
+ document.getElementById('ok').onclick=submit;
+ nm.addEventListener('keydown',function(e){if(e.key==='Enter')submit()});
+}
+function result(name){
+ var safe=document.createElement('div');safe.textContent=name;
+ card.innerHTML='<div class="big">🥰</div><p>Hasil tes untuk</p><h1>'+safe.innerHTML+'</h1><p>Kamu terdeteksi sangat dicintai.</p><div class="final">Love u ❤️</div><p>Terima kasih sudah ada di hidupku.</p>';
+ for(var k=0;k<50;k++)setTimeout(heart,k*50);
+}
+intro();
+</script>
+</body>
+</html>
